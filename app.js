@@ -1,10 +1,11 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const blogsRouter = require('./controllers/blogs')
+require('dotenv').config({ path: process.env.NODE_ENV === 'test' ? '.env.test' : '.env' })
 
+const blogsRouter = require('./controllers/blogs')
 const app = express()
 
-const mongoUrl = 'mongodb+srv://piirainenjani:blogilista@blogilista.bdfkpdc.mongodb.net/?retryWrites=true&w=majority&appName=Blogilista'
+const mongoUrl = process.env.TEST_MONGODB_URI || process.env.MONGODB_URI
 mongoose.connect(mongoUrl)
 
 app.use(express.json())

@@ -11,3 +11,16 @@ Content-Type: application/json
   "url": "http://example.com/testi",
   "likes": 5
 }
+
+### Luo uusi käyttäjä
+POST http://localhost:3003/api/users
+Content-Type: application/json
+
+{
+  "username": "jani123",
+  "name": "Jani Piirainen",
+  "password": "salasana"
+}
+
+### Hae kaikki käyttäjät
+GET http://localhost:3003/api/users

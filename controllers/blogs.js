@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 
@@ -11,13 +12,16 @@ blogsRouter.get('/', async (request, response) => {
   response.json(blogs)
 })
 
-// POST a new blog
+// POST a new blog (requires valid token)
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
 
-  // Hae ensimmäinen käyttäjä tietokannasta
-  const users = await User.find({})
-  const user = users[0] // Valitaan ensimmäinen
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!request.token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+
+  const user = await User.findById(decodedToken.id)
 
   if (!body.title || !body.url) {
     return response.status(400).json({ error: 'title and url are required' })
@@ -28,10 +32,11 @@ blogsRouter.post('/', async (request, response) => {
     author: body.author,
     url: body.url,
     likes: body.likes || 0,
-     user: user._id,
+    user: user._id,
   })
 
   const savedBlog = await blog.save()
+  user.blogs = user.blogs.concat(savedBlog._id)
   await user.save()
 
   response.status(201).json(savedBlog)
@@ -59,7 +64,6 @@ blogsRouter.delete('/:id', async (request, response) => {
     response.status(500).json({ error: 'internal server error' })
   }
 })
-
 
 // PUT update blog likes
 blogsRouter.put('/:id', async (request, response) => {

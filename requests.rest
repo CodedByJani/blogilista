@@ -33,3 +33,15 @@ Content-Type: application/json
   "username": "jani123",
   "password": "salasana"
 }
+
+### Lisää blogi tokenin kanssa
+POST http://localhost:3003/api/blogs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImphbmkxMjMiLCJpZCI6IjY4ODFmMWI3YjAxOWE3MWM5M2YzZmQxNiIsImlhdCI6MTc1MzQyOTY1Mn0.xMPoTFR4eRWxdClvza8cNf6zL51p5IhJgEbHA18UgzE
+Content-Type: application/json
+
+{
+  "title": "Tokenilla lisätty blogi",
+  "author": "Kirjautunut käyttäjä",
+  "url": "http://example.com/blogi",
+  "likes": 10
+}

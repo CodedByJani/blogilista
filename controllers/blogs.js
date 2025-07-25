@@ -1,18 +1,23 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const blogsRouter = express.Router()
 
 // GET all blogs
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({})
+  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
   response.json(blogs)
 })
 
 // POST a new blog
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
+
+  // Hae ensimmäinen käyttäjä tietokannasta
+  const users = await User.find({})
+  const user = users[0] // Valitaan ensimmäinen
 
   if (!body.title || !body.url) {
     return response.status(400).json({ error: 'title and url are required' })
@@ -22,10 +27,13 @@ blogsRouter.post('/', async (request, response) => {
     title: body.title,
     author: body.author,
     url: body.url,
-    likes: body.likes || 0
+    likes: body.likes || 0,
+     user: user._id,
   })
 
   const savedBlog = await blog.save()
+  await user.save()
+
   response.status(201).json(savedBlog)
 })
 

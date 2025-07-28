@@ -6,13 +6,11 @@ const User = require('../models/user')
 
 const blogsRouter = express.Router()
 
-// GET all blogs
 blogsRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
   response.json(blogs)
 })
 
-// POST a new blog (requires valid token)
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
 
@@ -42,7 +40,6 @@ blogsRouter.post('/', async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
-// DELETE a blog by ID
 blogsRouter.delete('/:id', async (request, response) => {
   const { id } = request.params
   console.log('DELETE request received for ID:', id)
@@ -65,7 +62,6 @@ blogsRouter.delete('/:id', async (request, response) => {
   }
 })
 
-// PUT update blog likes
 blogsRouter.put('/:id', async (request, response) => {
   const id = request.params.id
   const { likes } = request.body

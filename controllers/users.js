@@ -9,7 +9,7 @@ const getUsers = async (request, response) => {
 const createUser = async (request, response) => {
   const { username, name, password } = request.body
 
-  // tarkista että kentät ovat olemassa ja tarpeeksi pitkiä
+
   if (!username || username.length < 3) {
     return response.status(400).json({ error: 'username must be at least 3 characters long' })
   }
@@ -18,7 +18,6 @@ const createUser = async (request, response) => {
     return response.status(400).json({ error: 'password must be at least 3 characters long' })
   }
 
-  // tarkista onko käyttäjätunnus jo olemassa
   const existingUser = await User.findOne({ username })
   if (existingUser) {
     return response.status(400).json({ error: 'username must be unique' })

@@ -27,14 +27,12 @@ const mostBlogs = (blogs) => {
     return null
   }
 
-  // Lasketaan montako blogia kukin kirjoittaja on tehnyt
   const counts = {}
 
   for (const blog of blogs) {
     counts[blog.author] = (counts[blog.author] || 0) + 1
   }
 
-  // Etsitään kirjoittaja, jolla eniten blogeja
   let maxAuthor = null
   let maxBlogs = 0
 

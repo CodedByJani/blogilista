@@ -1,7 +1,7 @@
 ### Hae kaikki blogit
 GET http://localhost:3003/api/blogs
 
-### Lisää uusi blogi (käyttäjä lisätään automaattisesti backendissä)
+### Lisää uusi blogi
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
 

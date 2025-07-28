@@ -7,11 +7,10 @@ const blogSchema = new mongoose.Schema({
   likes: Number,
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User' // tämä viittaa User-malliin
+    ref: 'User'
   }
 })
 
-// tämä muuttaa _id → id ja poistaa __v
 blogSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     returnedObject.id = returnedObject._id.toString()

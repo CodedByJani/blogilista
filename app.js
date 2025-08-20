@@ -7,6 +7,9 @@ const blogsRouter = require('./controllers/blogs')
 const loginRouter = require('./controllers/login')
 const tokenExtractor = require('./middleware/tokenExtractor')
 
+// Lisää tämä rivi:
+const testingRouter = require('./controllers/testing')
+
 const app = express()
 
 const mongoUrl = process.env.TEST_MONGODB_URI || process.env.MONGODB_URI
@@ -18,4 +21,10 @@ app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 
+// Lisää tämä koodi, jotta reitti on käytössä vain testitilassa
+if (process.env.NODE_ENV === 'test') {
+  app.use('/api/testing', testingRouter)
+}
+
 module.exports = app
+
